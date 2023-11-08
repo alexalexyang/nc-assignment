@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "clear && tsc && node dist/index.js",
-    "test": "clear && cucumber-js"
+    "test": "clear && cucumber-js",
+    "benchmark": "clear && ts-node performance-tests/index.ts"
   },
   "keywords": [],
   "author": "",
