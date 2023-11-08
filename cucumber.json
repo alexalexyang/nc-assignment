@@ -1,0 +1,35 @@
+{
+    "default": {
+        "requireModule": [
+            "ts-node/register"
+        ],
+        "require": [
+            "tests/**/*.ts"
+        ],
+        "paths": [
+            "tests"
+        ],
+        "format": [
+            "parallel",
+            "progress-bar",
+            [
+                "usage",
+                "reports/usage.txt"
+            ],
+            [
+                "message",
+                "reports/messages.ndjson"
+            ],
+            [
+                "junit",
+                "reports/junit.xml"
+            ],
+            [
+                "html",
+                "reports/html-formatter.html"
+            ]
+        ],
+        "retry": 2,
+        "retryTagFilter": "@flaky"
+    }
+}
