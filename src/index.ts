@@ -1,5 +1,9 @@
-import { getDistance } from "./helpers";
+import type { LinkStation } from "./helpers";
+import { findBestStation } from "./helpers";
 
-const distance = getDistance([-5, 1.5], [2, 3]);
+const linkStations: LinkStation[] =
+    [[0, 0, 10],
+    [20, 20, 5],
+    [10, 0, 12]]
 
-console.log(distance)
+console.log(findBestStation([3, 4], linkStations))
