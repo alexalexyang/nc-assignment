@@ -84,10 +84,21 @@ export const findBestStationUnoptimised = (deviceCoords: Coordinates, linkStatio
     return bestStation;
 }
 
+type Options = {
+    /**
+     * If true, return first station with the highest power.
+     */
+    greedy: boolean;
+}
+
+const defaultOptions: Options = {
+    greedy: false,
+}
+
 /**
  * Optimised version of findBestStationUnoptimised.
  */
-export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[]) => {
+export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[], options: Options = defaultOptions) => {
     let bestStation: BestStation = {
         coords: [0, 0],
         reach: 0,
@@ -111,6 +122,10 @@ export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations
                 reach: reach,
                 power: power,
                 distance: distance
+            }
+
+            if (!options.greedy) {
+                return bestStation
             }
         };
         console.log("\n")
