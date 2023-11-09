@@ -26,6 +26,10 @@ This section aligns client and team on the basic expectations of the product. Th
 - Objective: build an MVP
   - All assumptions, requirements, and scope follow from this objective
 
+- Algorithm
+  - Possibly: version of KNN
+  - Text says it __can__ be solved in 2D space but it seems more realistic to solve in 3D space. Was the text a red herring? Sneaky.
+
 - Link station locations are persistent
   - I.e., we can save them to a persistent storage for reuse
   - More persistent than device locations
