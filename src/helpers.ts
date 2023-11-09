@@ -36,39 +36,85 @@ export const calcPower = (reach: number, distance: number): number => {
 export type LinkStation = [number, number, number]
 
 type BestStation = {
-    station: LinkStation;
+    coords: Coordinates;
+    reach: number;
     power: number;
+
+    /**
+     * Distance from the device to the station
+     */
+    distance: number;
 }
 
 
 /**
- * Best station is the one with most power
+ * Best station is the one with most power.
+ * This function has O(n) complexity.
+ * This is the base function with which we compare the performance of alternatives
  */
-export const findBestStation = (deviceCoords: Coordinates, linkStations: LinkStation[]) => {
-
+export const findBestStationUnoptimised = (deviceCoords: Coordinates, linkStations: LinkStation[]) => {
     let bestStation: BestStation = {
-        station: [0, 0, 0],
-        power: 0
+        coords: [0, 0],
+        reach: 0,
+        power: 0,
+        distance: 0
     };
 
-    linkStations.forEach((linkStation) => {
+    for (const linkStation of linkStations) {
         const [x, y, reach] = linkStation;
 
         const distance = getDistance(deviceCoords, [x, y]);
 
         const power = calcPower(reach, distance)
 
-        console.log(x, y, reach, distance, power)
+        // console.log(x, y, reach, distance, power)
 
         if (power > bestStation.power) {
-            console.log("Change: ", power, bestStation)
+            // console.log("Change: ", power, bestStation)
             bestStation = {
-                station: linkStation,
-                power: power
+                coords: [x, y],
+                reach: reach,
+                power: power,
+                distance: distance
             }
         };
         console.log("\n")
-    })
+    }
+
+    return bestStation;
+}
+
+/**
+ * Optimised version of findBestStationUnoptimised.
+ */
+export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[]) => {
+    let bestStation: BestStation = {
+        coords: [0, 0],
+        reach: 0,
+        power: 0,
+        distance: 0
+    };
+
+    for (const linkStation of linkStations) {
+        const [x, y, reach] = linkStation;
+
+        const distance = getDistance(deviceCoords, [x, y]);
+
+        const power = calcPower(reach, distance)
+
+        // console.log(x, y, reach, distance, power)
+
+        if (power > bestStation.power) {
+            // console.log("Change: ", power, bestStation)
+            bestStation = {
+                coords: [x, y],
+                reach: reach,
+                power: power,
+                distance: distance
+            }
+        };
+        console.log("\n")
+    }
 
     return bestStation;
 }
