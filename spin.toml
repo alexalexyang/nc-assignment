@@ -1,0 +1,17 @@
+spin_manifest_version = 2
+
+[application]
+authors = ["Alex Yang <alexalexyang@gmail.com>"]
+description = "NC test"
+name = "nc-test"
+version = "0.1.0"
+
+[[trigger.http]]
+route = "/..."
+component = "nc-test"
+
+[component.nc-test]
+source = "target/nc-test.wasm"
+exclude_files = ["**/node_modules"]
+[component.nc-test.build]
+command = "npm run build"

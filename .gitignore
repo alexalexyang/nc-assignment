@@ -1,7 +1,9 @@
 .DS_Store
+.spin
 node_modules
 
 dist
+target
 reports
 
 notes.md
