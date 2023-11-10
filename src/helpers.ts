@@ -35,7 +35,7 @@ export const calcPower = (reach: number, distance: number): number => {
  */
 export type LinkStation = [number, number, number]
 
-type BestStation = {
+export type BestStation = {
     coords: Coordinates;
     reach: number;
     power: number;
@@ -67,10 +67,7 @@ export const findBestStationUnoptimised = (deviceCoords: Coordinates, linkStatio
 
         const power = calcPower(reach, distance)
 
-        // console.log(x, y, reach, distance, power)
-
         if (power > bestStation.power) {
-            // console.log("Change: ", power, bestStation)
             bestStation = {
                 coords: [x, y],
                 reach: reach,
@@ -84,15 +81,17 @@ export const findBestStationUnoptimised = (deviceCoords: Coordinates, linkStatio
     return bestStation;
 }
 
-type Options = {
+export type Options = {
     /**
      * If true, return first station with the highest power.
      */
     greedy: boolean;
+    minPower: number;
 }
 
 const defaultOptions: Options = {
     greedy: false,
+    minPower: 0,
 }
 
 /**
@@ -113,10 +112,7 @@ export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations
 
         const power = calcPower(reach, distance)
 
-        // console.log(x, y, reach, distance, power)
-
-        if (power > bestStation.power) {
-            // console.log("Change: ", power, bestStation)
+        if (power > bestStation.power && power > options.minPower) {
             bestStation = {
                 coords: [x, y],
                 reach: reach,

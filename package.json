@@ -6,7 +6,7 @@
   "scripts": {
     "start": "clear && tsc && node dist/index.js",
     "test": "clear && cucumber-js",
-    "benchmark": "clear && ts-node tests/performance.ts"
+    "benchmark": "clear && ts-node performance-tests/index.ts"
   },
   "keywords": [],
   "author": "",
