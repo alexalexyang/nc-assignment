@@ -1,39 +1,61 @@
+// May have to run this file multiple times to get proper results
+
 import type { Coordinates, LinkStation } from "../src/helpers";
 import { findBestStationUnoptimised, findBestStationOptimised } from "../src/helpers";
-import { createMockStations, getRandomNum } from "./helpers";
+import { createMockStations, getRandomNum, performanceTest } from "./helpers";
 
 const linkStations: LinkStation[] = createMockStations(100)
 const deviceCoords: Coordinates = [getRandomNum(0, 101), getRandomNum(0, 101)]
+const fewTries = 50;
+const manyTries = 1000;
 
-const timerStart00 = performance.now()
-const bestStation00 = findBestStationUnoptimised(deviceCoords, linkStations)
-const timerEnd00 = performance.now()
+/*
+* Warm-up is never logged to stdout for some reason.
+*/
+performanceTest(
+    fewTries,
+    findBestStationUnoptimised,
+    deviceCoords,
+    linkStations,
+    "Warm-up, few tries"
+)
 
-const timerStart0 = performance.now()
-const bestStation0 = findBestStationUnoptimised(deviceCoords, linkStations)
-const timerEnd0 = performance.now()
+performanceTest(
+    manyTries,
+    findBestStationUnoptimised,
+    deviceCoords,
+    linkStations,
+    "Warm-up, many tries"
+)
 
-const timerStart1 = performance.now()
-const bestStationUnoptimised = findBestStationUnoptimised(deviceCoords, linkStations)
-const timerEnd1 = performance.now()
+performanceTest(
+    fewTries,
+    findBestStationUnoptimised,
+    deviceCoords,
+    linkStations,
+    "Unoptimised, few tries"
+)
 
+performanceTest(
+    manyTries,
+    findBestStationUnoptimised,
+    deviceCoords,
+    linkStations,
+    "Unoptimised, many tries"
+)
 
-const timerStart2 = performance.now()
-const bestStationOptimised = findBestStationOptimised(deviceCoords, linkStations)
-const timerEnd2 = performance.now()
+performanceTest(
+    fewTries,
+    findBestStationOptimised,
+    deviceCoords,
+    linkStations,
+    "Optimised, few tries"
+)
 
-// console.log("Best station (warm-up): ", bestStationUnoptimised)
-// console.log(`Execution time (ms): ${timerEnd0 - timerStart0}`)
-// console.log("\n")
-
-// console.log("Best station (warm-up): ", bestStationUnoptimised)
-// console.log(`Execution time (ms): ${timerEnd0 - timerStart0}`)
-// console.log("\n")
-
-console.log("Best station (unoptimised): ", bestStationUnoptimised)
-console.log(`Execution time (ms): ${timerEnd1 - timerStart1}`)
-console.log("\n")
-
-console.log("Best station (optimised): ", bestStationOptimised)
-console.log(`Execution time (ms): ${timerEnd2 - timerStart2}`)
-console.log("\n")
+performanceTest(
+    manyTries,
+    findBestStationOptimised,
+    deviceCoords,
+    linkStations,
+    "Optimised, many tries"
+)

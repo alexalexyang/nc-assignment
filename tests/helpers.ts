@@ -1,4 +1,4 @@
-import type { LinkStation } from '../src/helpers';
+import type { BestStation, Coordinates, LinkStation, Options } from '../src/helpers';
 
 export const getRandomNum = (min: number, max: number): number => {
     return Math.random() * (max - min) + min;
@@ -20,3 +20,27 @@ export const createMockStations = (count: number): LinkStation[] => {
 
     return stations;
 }
+
+type FuncType = (deviceCoords: Coordinates, linkStations: LinkStation[], options?: Options) => BestStation;
+
+export const performanceTest = (iterations: number, func: FuncType, deviceCoords: Coordinates, linkStations: LinkStation[], title: string) => {
+
+    const executionTimes: number[] = [];
+
+    for (let i = 0; i < iterations + 1; i++) {
+        const timerStart = performance.now()
+        const bestStation = func(deviceCoords, linkStations)
+        const timerEnd = performance.now()
+
+        const executionTime = timerEnd - timerStart;
+        executionTimes.push(executionTime);
+    }
+
+    let averageExecutionTime: number | undefined = average(executionTimes);
+
+    console.log(title)
+    console.log(`Average execution time (ms): ${averageExecutionTime}`)
+    console.log("\n")
+}
+
+const average = (array: number[]): number => array.reduce((a, b) => a + b) / array.length;
