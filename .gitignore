@@ -2,6 +2,8 @@
 .spin
 node_modules
 
+.env
+
 dist
 target
 reports

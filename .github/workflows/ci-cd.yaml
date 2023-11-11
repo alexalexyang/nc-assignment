@@ -1,0 +1,14 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yaml
+  deploy:
+    needs: tests
+    uses: ./.github/workflows/deployment.yaml
+    secrets:
+      FERMYON: ${{ secrets.FERMYON }}
