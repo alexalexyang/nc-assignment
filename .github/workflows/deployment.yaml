@@ -30,3 +30,8 @@ jobs:
           fermyon_token: ${{ secrets.FERMYON }}
           variables: |-
             redis=${{ secrets.REDIS }}
+
+      - name: Set env vars
+        env:
+          REDIS_URL: ${{ secrets.REDIS }}
+        run: spin cloud variables set --app nc-test redis=$REDIS_URL

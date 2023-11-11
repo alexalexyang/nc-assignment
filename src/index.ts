@@ -19,12 +19,15 @@ export const handleRequest: HandleRequest = async function (request: HttpRequest
         if (!deviceCoords || !stations) {
             throw new Error("Missing device coordinates or link stations")
         }
+        console.log("Device coords and stations found")
 
         const redisUrl = Config.get("redis")
 
         if (!redisUrl) {
             throw new Error("Redis URL not found")
         }
+
+        console.log("Redis URL found")
 
         const key = deviceCoords.join(",")
 
