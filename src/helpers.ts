@@ -35,7 +35,7 @@ export const calcPower = (reach: number, distance: number): number => {
  */
 export type LinkStation = [number, number, number]
 
-export type BestStation = {
+export type Station = {
     coords: Coordinates;
     reach: number;
     power: number;
@@ -52,8 +52,12 @@ export type BestStation = {
  * This function has O(n) complexity.
  * This is the base function with which we compare the performance of alternatives
  */
-export const findBestStationUnoptimised = (deviceCoords: Coordinates, linkStations: LinkStation[]) => {
-    let bestStation: BestStation = {
+export const findBestStationUnoptimised = (
+    deviceCoords: Coordinates,
+    linkStations: LinkStation[],
+) => {
+
+    let bestStation: Station = {
         coords: [0, 0],
         reach: 0,
         power: 0,
@@ -98,7 +102,7 @@ const defaultOptions: Options = {
  * Optimised version of findBestStationUnoptimised.
  */
 export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[], options: Options = defaultOptions) => {
-    let bestStation: BestStation = {
+    let bestStation: Station = {
         coords: [0, 0],
         reach: 0,
         power: 0,

@@ -1,28 +1,63 @@
 import { HandleRequest, HttpRequest, HttpResponse } from "@fermyon/spin-sdk"
 import type { LinkStation } from "./helpers";
 import { findBestStationUnoptimised } from "./helpers";
+import { getClient } from '../db'
+import { Redis, Config } from "@fermyon/spin-sdk"
 
-// const linkStations: LinkStation[] =
-//     [[0, 0, 10],
-//     [20, 20, 5],
-//     [10, 0, 12]]
+export type Input = {
+    deviceCoords: [number, number],
+    stations: LinkStation[]
+}
 
-// console.log(findBestStationUnoptimised([3, 4], linkStations))
-
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
 
 export const handleRequest: HandleRequest = async function (request: HttpRequest): Promise<HttpResponse> {
+    try {
+        const { deviceCoords, stations } = request.json() as Input
 
-    const body = request.json() as { data: LinkStation[] }
-    console.log(body.data)
+        if (!deviceCoords || !stations) {
+            throw new Error("Missing device coordinates or link stations")
+        }
 
-    const bestStation = findBestStationUnoptimised([3, 4], body.data)
+        const redisUrl = Config.get("redis")
 
-    console.log(bestStation)
+        if (!redisUrl) {
+            throw new Error("Redis URL not found")
+        }
 
+        const key = deviceCoords.join(",")
 
-    return {
-        status: 200,
-        headers: { "content-type": "text/plain" },
-        body: JSON.stringify(bestStation)
+        const saved = (decoder.decode(new Uint8Array(Redis.get(redisUrl, key))))
+
+        if (saved.length > 0) {
+            console.log("Device coord saved")
+            const data = JSON.parse(saved)
+
+            return {
+                status: 200,
+                headers: { "content-type": "text/plain" },
+                body: JSON.stringify(data)
+            }
+        }
+        console.log("Device coord not saved")
+
+        const bestStation = findBestStationUnoptimised(deviceCoords, stations)
+
+        Redis.set(redisUrl, key, encoder.encode(JSON.stringify(bestStation)).buffer)
+
+        return {
+            status: 200,
+            headers: { "content-type": "text/plain" },
+            body: JSON.stringify(bestStation)
+        }
+
+    } catch (error) {
+        return {
+            status: 500,
+            headers: { "content-type": "text/plain" },
+            body: JSON.stringify({ error })
+        }
     }
+
 }

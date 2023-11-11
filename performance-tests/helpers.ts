@@ -1,7 +1,7 @@
-import type { BestStation, Coordinates, LinkStation, Options } from '../src/helpers';
+import type { Station, Coordinates, LinkStation, Options } from '../src/helpers';
 
 export const getRandomNum = (min: number, max: number): number => {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 export const createMockStations = (count: number): LinkStation[] => {
@@ -21,7 +21,7 @@ export const createMockStations = (count: number): LinkStation[] => {
     return stations;
 }
 
-type FuncType = (deviceCoords: Coordinates, linkStations: LinkStation[], options?: Options) => BestStation;
+type FuncType = (deviceCoords: Coordinates, linkStations: LinkStation[], options?: Options) => Station;
 
 export const performanceTest = (iterations: number, func: FuncType, deviceCoords: Coordinates, linkStations: LinkStation[], title: string) => {
 

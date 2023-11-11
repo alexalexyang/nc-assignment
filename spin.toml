@@ -10,8 +10,18 @@ version = "0.1.0"
 route = "/..."
 component = "nc-test"
 
+[variables]
+redis = { required = true }
+
 [component.nc-test]
 source = "target/nc-test.wasm"
 exclude_files = ["**/node_modules"]
+allowed_outbound_hosts = [
+    "redis://redis-16675.c300.eu-central-1-1.ec2.cloud.redislabs.com:16675",
+]
+
 [component.nc-test.build]
 command = "npm run build"
+
+[component.nc-test.variables]
+redis = "{{ redis }}"
