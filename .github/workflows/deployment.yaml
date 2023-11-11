@@ -24,9 +24,6 @@ jobs:
       - name: Run npm install
         run: npm install
 
-      - name: Echo secret
-        run: echo Secret is ${{ secrets.FERMYON }}
-
       - name: Build and deploy
         uses: fermyon/actions/spin/deploy@v1
         with:
