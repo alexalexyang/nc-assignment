@@ -55,7 +55,7 @@ export type Station = {
 export const findBestStationUnoptimised = (
     deviceCoords: Coordinates,
     linkStations: LinkStation[],
-) => {
+): Station => {
 
     let bestStation: Station = {
         coords: [0, 0],
@@ -101,7 +101,7 @@ const defaultOptions: Options = {
 /**
  * Optimised version of findBestStationUnoptimised.
  */
-export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[], options: Options = defaultOptions) => {
+export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations: LinkStation[], options: Options = defaultOptions): Station => {
     let bestStation: Station = {
         coords: [0, 0],
         reach: 0,
@@ -132,4 +132,41 @@ export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations
     }
 
     return bestStation;
+}
+
+
+/**
+ * Not real binary search. Uses binary search-inspired algorithm to find the first station with high enough power.
+ * This won't work. It's just an idea.
+ * 
+ * @param deviceCoords 
+ * @param stations Stations sorted by reach with lowest reach first.
+ * @param target 
+ * @param start 
+ * @param end 
+ * @returns 
+ */
+const pseudoBinarySearch = function (deviceCoords: Coordinates, stations: LinkStation[], target: number, start: number, end: number): (Station | undefined) {
+
+    if (start > end) return undefined;
+
+    let mid = Math.floor((start + end) / 2);
+
+    const station = stations[mid];
+
+    const [x, y, reach] = station;
+
+    const distance = getDistance(deviceCoords, [x, y]);
+
+    const power = calcPower(reach, distance)
+
+    if (power > target) return {
+        coords: [x, y],
+        reach: reach,
+        power: power,
+        distance: distance
+    }
+
+    // Stations are sorted by reach, but power depends on distance. Even if reach is higher, power might be 0. So this won't always work.
+    if (power < target) return pseudoBinarySearch(deviceCoords, stations, target, mid + 1, end);
 }
