@@ -1,7 +1,6 @@
 import { HandleRequest, HttpRequest, HttpResponse } from "@fermyon/spin-sdk"
-import type { LinkStation } from "./helpers";
-import { findBestStationUnoptimised } from "./helpers";
-import { getClient } from '../db'
+import type { LinkStation, Station } from "./helpers";
+import { findBestStationUnoptimised, getOutputString } from "./helpers";
 import { Redis, Config } from "@fermyon/spin-sdk"
 
 export type Input = {
@@ -35,12 +34,12 @@ export const handleRequest: HandleRequest = async function (request: HttpRequest
 
         if (saved.length > 0) {
             console.log("Device coord saved")
-            const data = JSON.parse(saved)
+            const data: Station = JSON.parse(saved)
 
             return {
                 status: 200,
                 headers: { "content-type": "text/plain" },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ result: getOutputString(deviceCoords, data), data })
             }
         }
         console.log("Device coord not saved")
@@ -52,7 +51,7 @@ export const handleRequest: HandleRequest = async function (request: HttpRequest
         return {
             status: 200,
             headers: { "content-type": "text/plain" },
-            body: JSON.stringify(bestStation)
+            body: JSON.stringify({ result: getOutputString(deviceCoords, bestStation) })
         }
 
     } catch (error) {

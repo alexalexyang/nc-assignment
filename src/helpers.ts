@@ -135,6 +135,13 @@ export const findBestStationOptimised = (deviceCoords: Coordinates, linkStations
 }
 
 
+export const getOutputString = (deviceCoords: Coordinates, station: Station): string => {
+    if (station.power === 0) return `No link station within reach for point ${deviceCoords.join(",")}`
+
+    return `Best link station for point ${deviceCoords.join(",")} is ${station.coords.join(",")} with power ${station.power}`
+}
+
+
 /**
  * Not real binary search. Uses binary search-inspired algorithm to find the first station with high enough power.
  * This won't work. It's just an idea.
