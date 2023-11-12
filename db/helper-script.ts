@@ -1,18 +1,42 @@
 import { getClient } from "./index";
 
-const checkDb = async () => {
-    const db = await getClient();
-
-    // const flushRes = await db.flushDb()
-
-    // const res = await db.set("test1", "test test")
-    // console.log({ res })
-
-    const entries = await db.keys("*")
-
-    db.disconnect();
-
-    console.log({ entries })
+enum Action {
+    "FLUSH",
+    "GET_KEYS",
+    "SET"
 }
 
-checkDb()
+const checkDb = async (action: Action) => {
+    const db = await getClient();
+
+    switch (action) {
+        case Action.FLUSH:
+            console.log("Flushing db")
+            const resFlush = await db.flushDb()
+            console.log({ resFlush })
+            break;
+
+        case Action.GET_KEYS:
+            console.log("Getting all keys")
+            const keys = await db.keys("*")
+            console.log({ keys })
+            break;
+
+        case Action.SET:
+            console.log("Setting key: test1, value: test test")
+            const res = await db.set("test1", "test test")
+            console.log({ res })
+            break;
+
+        default:
+            break;
+    }
+
+    db.disconnect();
+}
+
+checkDb(Action.FLUSH)
+
+// checkDb(Action.GET_KEYS)
+
+// checkDb(Action.SET)
