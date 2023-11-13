@@ -4,6 +4,11 @@ export const getRandomNum = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+/**
+ * Creates mock link stations
+ * @param count Number of stations to create
+ * @returns `LinkStation[]`
+ */
 export const createMockStations = (count: number): LinkStation[] => {
     const min = 0;
     const max = 101;

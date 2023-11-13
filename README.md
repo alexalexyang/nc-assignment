@@ -1,4 +1,4 @@
-# Code assignment scope
+# Code assignment
 
 ## Intro
 
@@ -19,23 +19,22 @@ Hence, just as in a real client engagement I begin by listing as explicitly as p
 For this link station assignment, I've identified one explicit requirement from the text (aside from core business logic) and inferred several others based on prior experience.
 
 
-## Initial assumptions, requirements, and scope
+## Assumptions, requirements, and scope
 
-This section aligns client and team on the basic expectations of the product. This is only a first draft and may change as discussions progress.
+This section aligns client and team on the basic expectations of the product. A first draft was sent on 8 Nov. This current draft is based on the built product.
 
 - Objective: build an MVP
   - All assumptions, requirements, and scope follow from this objective
 
 - Algorithm
-  - Possibly: version of KNN
-  - Text says it __can__ be solved in 2D space but it seems more realistic to solve in 3D space. Was the text a red herring? Sneaky.
+  - Brute force: based on the text ("most power"), it's assumed that we need to measure power for every link station in relation to the given data points.
+  - An algorithm is also prepared for a case where optimisation is allowed. It performs very much better.
 
 - Link station locations are persistent
   - I.e., we can save them to a persistent storage for reuse
-  - More persistent than device locations
 
 - Device locations are persistent
-  - I.e., we can save them to a persistent storage for reuse but may have to account for staleness
+  - I.e., we can save them to a persistent storage for reuse
 
 - No need to account for staleness of data
 
@@ -44,12 +43,13 @@ This section aligns client and team on the basic expectations of the product. Th
     - More complex requirements might need relational or graph DBs or something else, which would be slower than key-value stores for the current case
   - Can be in-memory
     - Which means persistent at least for a while
-    - Probably will use Redis, which does offer options to write to disk
-  - (I might not implement persistent storage. Depends on time constraint.)
+    - Redis
+      - Offers an option to write to disk, which we will not use
 
-- Simple REST API that accepts JSON for input data is good enough
-  - Express.js back end
-  - No front end
+- Fermyon serverless app
+  - App compiled to Wasm
+  - Not as fast as native V8 engine ([more here](https://www.fermyon.com/blog/spin-js-sdk)) but making use of this test to try out new tech
+    - I picked Fermyon because I think ML models may be deployed using Wasm stacks in similar fashion in future
 
 - Focus on core business logic
   - I.e.: exactly what is stated in the assignment text
@@ -80,10 +80,58 @@ This section aligns client and team on the basic expectations of the product. Th
   - Tests
     - Provide confidence in code across many changes
 
-## Conclusion
+## How to use
 
-While I've kept the job profile in mind, I've scoped this task based on what I feel is most optimal for it. I've made decisions such as not using Python or the hyperscalers, which would fit the job profile better.
+There are several ways to try out the code.
 
-Feel free to tell me what to drop, what to focus on, what to change, or anything else.
+### Local Fermyon app instance
 
-If there are no comments, I will take it as assent and proceed to refine and build out the solution.
+- Set up a Redis account [here](https://redis.io/)
+
+- Set up a Redis DB
+  - Free tier available
+
+- Get the connection string
+
+- Export the connection string as an environment variable to `SPIN_VARIABLE_REDIS` in local shell
+  - E.g.: `export SPIN_VARIABLE_REDIS=redis://username:password@redis-1234.abc.eu-abc-123.ec2.cloud.redislabs.com:16675`
+
+- Run `npm i`
+
+- Run `npm start`
+
+- Send mock data to `http://127.0.0.1:3000` using your method of choice.
+  - E.g.: `curl -X POST http://localhost:3000 -H "Content-Type: application/json" -d @db/mock-data.json`
+  - Mock data in `mock-data.json` is provided in db directory so you can run the curl command from root directory
+  - This local instance communicates with the remote Redis instance set up above
+
+### Remote Fermyon app instance  
+
+I'd rather not reveal the URL here. Can demo in person.
+
+
+### Tests
+
+`npm run test` will use `cucumber.js` to run several tests. The `tests/assignment` directory in particular contains tests for the scenarios described in the assignment text.
+
+
+## Performance tests
+
+Run very simple performance tests with `npm run benchmark`.
+
+
+## Mock data
+
+`db/create-mocks.ts` is a script to help generate device coordinates and link station data. `npm run create-mocks` runs this script.
+
+Pass a whole number to `createMockStations` to create an array of as many stations as you like.
+
+Use the generated `mock-data.json` file directly in requests.
+
+
+## Communicating with the remote Redis instance
+
+`db/helper-script.ts` helps when we want to flush the DB, get keys, or set some. Manual tweaking is necessary.
+
+This script does not use Fermyon APIs. It relies on the Redis library and takes the connection string via an environment variable named `REDIS`.
+
