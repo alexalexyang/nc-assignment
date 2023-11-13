@@ -87,6 +87,7 @@ There are several ways to try out the code.
 ### Local Fermyon app instance
 
 - Set up a Redis account [here](https://redis.io/)
+  - You can also use a Docker image or otherwise set up locally. I've not provided a Dockerfile due to time constraints.
 
 - Set up a Redis DB
   - Free tier available
