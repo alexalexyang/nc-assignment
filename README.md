@@ -1,5 +1,22 @@
 # Code assignment
 
+This was for a cloud developer position at Nordcloud.
+
+The assignment text is very brief and we don't get any other info than that. So, just to save future candidates time, I will mention: 
+
+- They expect both a front end and a back end even though it's not stated in the assignment text. It appears they penalise you heavily if you don't code a front end.
+
+- It seems there is no need to figure out an optimal algorithm for the task. Just iterating through the loop at O(n) is fine. This would've been particularly useful for people like me to know. I really dug deep. KNN, trees, path tracking, etc. I might have burnt out.
+
+- They know people look up past approaches to their tests so feel free to talk about it.
+
+I don't know if these expectations will change in future but they are correct as of 15 Nov 2023.
+
+We've all gone through job searches and know how painful it is. Sometimes, mental health and even lives hang on a thread because of it. Let's try to be kinder.
+
+Good luck! 🙂
+
+
 ## Intro
 
 Having tested and recruited software engineers myself I know:
