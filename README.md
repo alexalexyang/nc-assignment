@@ -8,6 +8,8 @@ The assignment text is very brief and we don't get any other info than that. So,
 
 - It seems there is no need to figure out an optimal algorithm for the task. Just iterating through the loop at O(n) is fine. This would've been particularly useful for people like me to know. I really dug deep. KNN, trees, path tracking, etc. I might have burnt out.
 
+- They seem to have scripted a specific set of expectations and candidates who deviate in any way are penalised for it. So, please don't feel bad if they say you're not good enough. It might be best to treat this as a light exercise, mainly to prep you for interviews with other companies.
+
 - They know people look up past approaches to their tests so feel free to talk about it.
 
 I don't know if these expectations will change in future but they are correct as of 15 Nov 2023.
